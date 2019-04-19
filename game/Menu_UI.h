@@ -4,12 +4,13 @@ using namespace std;
 #include <SFML/Graphics.hpp>
 using namespace sf;
 
+//MenuUI class to represent User interface at start screen
 class Menu_UI
 {
 private:
-	Font font;
-	Text btnText, endgameText, titleText;
-	RectangleShape startBtn;
+	Font font;								//Font var for text
+	Text btnText, endgameText, titleText;	//Text vars for the start button, title, and results screen
+	RectangleShape startBtn;				//Rectangle var for
 public:
 	Menu_UI()
 	{

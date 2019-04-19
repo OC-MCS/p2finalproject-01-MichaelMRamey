@@ -7,21 +7,23 @@ using namespace sf;
 #include "alien.h"
 #include "BombMgr.h"
 
-class MissileMgr;
-
+//AlienMgr class to represent the alien horde as a whole.
+// anything that is useful to apply to the entire group i.e.
+// spawning them, moving them, and checking for collisions with missiles
 class AlienMgr
 {
 private:
-	Texture alienTexture;
-	list<Alien> alienList;
-	list<Alien>::iterator alienListItr;
-	int aliensKilled;
-	int aliensSpawned;
+	Texture alienTexture;				//Var for the texture all aliens will use
+	list<Alien> alienList;				//List of aliens
+	list<Alien>::iterator alienListItr;	//Iterator used for moving though the alien list
+	int aliensKilled;					//Counter for number of aliens killed
 public:
+	//Constructor for AlienMgr.  Simply loads the texture.
 	AlienMgr()
 	{
 		loadTexture();
 	}
+	//Function to load texture for the alien horde
 	void loadTexture()
 	{
 		if (!alienTexture.loadFromFile("alien1.png"))
@@ -30,6 +32,7 @@ public:
 			exit(EXIT_FAILURE);
 		}
 	}
+	//Function to draw each individual alien.  Called from main's "drawing loop"
 	void drawAliens(RenderWindow& win)
 	{
 		for (alienListItr = alienList.begin(); alienListItr != alienList.end(); alienListItr++)
@@ -37,20 +40,22 @@ public:
 			alienListItr->draw(win);
 		}
 	}
+	//Function for adding a new alien to the AlienList.  Needs a position for the alien to spawn at.
 	void newAlien(Vector2f pos)
 	{
 		alienList.push_back(Alien(pos, alienTexture));
 	}
+	//Function to spawn a line of 10 aliens
 	void spawnAliens()
 	{
-		float x = 40;
+		float x = 40;	//Var for the alien's spawning x position
 		for (int i = 0; i < 10; i++)
 		{
 			newAlien(Vector2f(x, 100));
-			aliensSpawned++;
 			x += 75;
 		}
 	}
+	//Function to move each alien.  Calls individual alien's move func
 	void moveAliens()
 	{
 		for (alienListItr = alienList.begin(); alienListItr != alienList.end(); alienListItr++)
@@ -58,13 +63,15 @@ public:
 			alienListItr->moveAlien();
 		}
 	}
+	//Function to delete all of the aliens from the list
 	void deleteAllAliens()
 	{
 		alienList.clear();
 	}
+	//Function to determine if the alien horde has reached the player's y position
 	bool aliensReachedPlayer()
 	{
-		bool result = 0;
+		bool result = false;  //Bool that stores whether or not the aliens have reached the player
 		for (alienListItr = alienList.begin(); alienListItr != alienList.end(); alienListItr++)
 		{
 			if (alienListItr->getYPos() > 550)
@@ -76,9 +83,11 @@ public:
 		}
 		return result;
 	}
+	//Function to check each individual alien for a missile collision using the hitbox functions.
+	//Checks every combination of alien with the missile hitbox that is passed.
 	bool checkForHit(FloatRect missileHitbox)
 	{
-		bool hitAlien = false;
+		bool hitAlien = false;  //Bool to store whether an alien has been hit
 		for (alienListItr = alienList.begin(); alienListItr != alienList.end();)
 		{
 			if (alienListItr->getHitbox().intersects(missileHitbox))
@@ -92,32 +101,20 @@ public:
 		}
 		return hitAlien;
 	}
-	Alien getAlien(int index)
-	{
-		alienListItr = alienList.begin();
-		advance(alienListItr, index);
-		return *alienListItr;
-	}
-
+	//Func to get the number of aliens killed during the game
 	int getAliensKilled()
 	{
 		return aliensKilled;
 	}
-	int getAliensSpawned()
-	{
-		return aliensSpawned;
-	}
+	//Func to reset the number of aliens killed
 	void resetKills()
 	{
 		aliensKilled = 0;
 	}
-	void resetAliensSpawned()
-	{
-		aliensSpawned = 0;
-	}
+	//Func to check if all of the aliens are dead
 	bool allAliensDead()
 	{
-		bool result = false;
+		bool result = false;	//Bool to store whether all the aliens are dead
 		if (alienList.size() == 0)
 		{
 			result = true;
@@ -129,8 +126,12 @@ public:
 		}
 		return result;
 	}
-	void bombChance(BombMgr& bombMgr)
+	//Func to choose a random alien to launch a bomb
+	//This func might be particularly inefficient because
+	//it breaks some encapsulation between AlienMgr and BombMgr.
+	void randomBomb(BombMgr& bombMgr)
 	{
+		//Generate a random number to select the alien that will drop a bomb
 		int randomNumber = rand() % alienList.size();
 		alienListItr = alienList.begin();
 		advance(alienListItr, randomNumber);

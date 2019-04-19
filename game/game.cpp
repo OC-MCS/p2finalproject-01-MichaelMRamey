@@ -17,7 +17,6 @@ using namespace sf;
 // Due: April 19th
 //============================================================
 
-
 int main()
 {
 	const int WINDOW_WIDTH = 800;

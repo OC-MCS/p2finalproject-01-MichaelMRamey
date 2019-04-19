@@ -1,17 +1,23 @@
 #pragma once
 #include "AlienMgr.h"
 #include "MissileMgr.h"
+
+//GameManager class to integrate all the other managers together
+//Handles game start, player lives, levels, and calls to collision functions in group mgrs
 class GameMgr
 {
 private:
-	int playerLivesLeft, levelNum, counter;
-	bool inGame, playerWin;
+	int playerLivesLeft, levelNum, bombCounter;  //PlayerLivesLeft: stores how many lives player has
+	//LevelNum: stores what level the player is on.  bombCounter: incremented every time gameStatus is
+	// checked.  When it reaches a certain number a bomb will be launched (call alienMgr.randomBomb())
+	bool inGame, playerWin;	//Bool vars to check if player is still in game or if they have won.
 public:
+	//Func for whenever the game starts
 	void startGame(AlienMgr& alienMgr, MissileMgr& missileMgr, BombMgr& bombMgr, Ship& ship)
 	{
 		playerLivesLeft = 3;
 		levelNum = 1;
-		counter = 0;
+		bombCounter = 0;
 		inGame = true;
 		playerWin = false;
 		alienMgr.deleteAllAliens();
@@ -52,7 +58,6 @@ public:
 					alienMgr.deleteAllAliens();
 					missileMgr.deleteAllMissiles();
 					bombMgr.deleteAllBombs();
-					alienMgr.resetAliensSpawned();
 					alienMgr.spawnAliens();
 					if (levelNum == 3)
 					{
@@ -69,15 +74,15 @@ public:
 				loseALife(alienMgr);
 			}
 		}
-		if (counter == bombMgr.getBombSpawnRate())
+		if (bombCounter == bombMgr.getBombSpawnRate())
 		{
 			for (int i = 0; i < levelNum; i++)
 			{
-				alienMgr.bombChance(bombMgr);
-				counter = 0;
+				alienMgr.randomBomb(bombMgr);
+				bombCounter = 0;
 			}
 		}
-		counter++;
+		bombCounter++;
 	}
 	void loseALife(AlienMgr& alienMgr)
 	{

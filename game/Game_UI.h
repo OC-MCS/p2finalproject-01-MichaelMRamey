@@ -4,12 +4,16 @@ using namespace std;
 #include <SFML/Graphics.hpp>
 using namespace sf;
 #include <string>
+
+//Game_UI class to represent the User interface for while the game is running
 class Game_UI
 {
 private:
-	Font font;
-	Text lives, numLives, aliensKilled, numKilled, level, numLevel;
+	Font font;	//Font for all of the text to be displayed
+	Text lives, numLives, aliensKilled, numKilled, level, numLevel;	//Text vars for lives (and the number of lives left),
+																	//kills/number of kills, level/which number level the player is on
 public:
+	//Constructor for the GameUI.  Sets the text font, color, size, and position for text vars in private data.
 	Game_UI(RenderWindow& win) 
 	{
 		loadFont();
@@ -44,33 +48,34 @@ public:
 		numLevel.setFillColor(Color::White);
 		numLevel.setPosition(725, 30);
 	}
+	//Func to load the font
 	void loadFont()
 	{
 		if (!font.loadFromFile("C:\\Windows\\Fonts\\ITCBLKAD.TTF"))
 			die("couldn't load font");
 	}
+	//Func to draw text concerning player lives.  Used in main's "drawing loop"
 	void dispLives(RenderWindow& win, int livesCount)
 	{
 		numLives.setString(to_string(livesCount));
 		win.draw(lives);
 		win.draw(numLives);
 	}
+	//Func to draw text concerning alien kills.  Used in main's "drawing loop"
 	void dispKills(RenderWindow& win, int killCount)
 	{
 		numKilled.setString(to_string(killCount));
 		win.draw(numKilled);
 		win.draw(aliensKilled);
 	}
+	//Func to draw text concerning the level.  Used in main's "drawing loop"
 	void dispLevelNum(RenderWindow& win, int lvlNum)
 	{
 		numLevel.setString(to_string(lvlNum));
 		win.draw(numLevel);
 		win.draw(level);
 	}
-	void dispEndGame(RenderWindow& win, string winner)
-	{
-
-	}
+	//Die func for font loading error.  Displays error msg and "dies gracefully"
 	void die(string msg)
 	{
 		cout << msg << endl;
