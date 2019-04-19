@@ -24,4 +24,36 @@
       <Filter>Source Files</Filter>
     </Text>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="alien.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ship.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AlienMgr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Missile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Bomb.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameMgr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MissileMgr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BombMgr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Menu_UI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game_UI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
 </Project>
