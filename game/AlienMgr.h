@@ -49,7 +49,7 @@ public:
 		{
 			newAlien(Vector2f(x, 100));
 			aliensSpawned++;
-			x += 100;
+			x += 75;
 		}
 	}
 	void moveAliens()
@@ -85,6 +85,7 @@ public:
 			if (alienListItr->getHitbox().intersects(missileHitbox))
 			{
 				alienListItr = alienList.erase(alienListItr);
+				aliensKilled++;
 				hitAlien = true;
 			}
 			else
@@ -98,6 +99,24 @@ public:
 		advance(alienListItr, index);
 		return *alienListItr;
 	}
-	
-
+	int getListSize()
+	{
+		return alienList.size();
+	}
+	int getAliensKilled()
+	{
+		return aliensKilled;
+	}
+	int getAliensSpawned()
+	{
+		return aliensSpawned;
+	}
+	void resetKills()
+	{
+		aliensKilled = 0;
+	}
+	void resetAliensSpawned()
+	{
+		aliensSpawned = 0;
+	}
 };

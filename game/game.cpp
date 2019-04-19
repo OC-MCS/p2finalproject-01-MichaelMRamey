@@ -111,6 +111,8 @@ int main()
 
 			gameMgr.checkGameStatus(alienMgr, missileMgr);
 			gameUI.dispLives(window, gameMgr.livesLeft());
+			gameUI.dispKills(window, alienMgr.getAliensKilled());
+
 			//FloatRect enemyBounds = enemy.getGlobalBounds();
 			/*if (missile.getGlobalBounds() == enemyBounds)															HITTING ENEMY
 			{
@@ -135,4 +137,3 @@ int main()
 
 	return 0;
 }
-

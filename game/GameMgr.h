@@ -4,8 +4,7 @@
 class GameMgr
 {
 private:
-	int playerLivesLeft;
-	int levelNum;
+	int playerLivesLeft, levelNum;
 public:
 	void startGame(AlienMgr& alienMgr)
 	{
@@ -13,9 +12,8 @@ public:
 		levelNum = 1;
 		alienMgr.spawnAliens();
 	}
+
 	// Do this every frame to check for collisions and level change
-
-
 	void checkGameStatus(AlienMgr& alienMgr, MissileMgr& missileMgr)
 	{
 		if (alienMgr.aliensReachedPlayer())
@@ -25,19 +23,23 @@ public:
 		
 		for (int i = 0; i < missileMgr.getListSize(); i++)
 		{
-			if(alienMgr.checkForHit(missileMgr.getMissile(i).getHitbox()))
+			if (alienMgr.checkForHit(missileMgr.getMissile(i).getHitbox()))
+			{
 				missileMgr.deleteMissile(i);
-		}
-
-		/*if (alienMgr.aliensKilled() == alienMgr.aliensSpawned())
-		{
-			levelNum++;
-		}	*/	
+				if (alienMgr.getAliensKilled() == alienMgr.getAliensSpawned())
+				{
+					levelNum++;
+					cout << "levelNum: " << levelNum << endl;
+				}
+			}	
+		}		
 	}
 	void loseALife(AlienMgr& alienMgr)
 	{
 		playerLivesLeft--;
 		alienMgr.deleteAllAliens();
+		alienMgr.resetKills();
+		alienMgr.resetAliensSpawned();
 		alienMgr.spawnAliens();
 	}
 	int livesLeft()
