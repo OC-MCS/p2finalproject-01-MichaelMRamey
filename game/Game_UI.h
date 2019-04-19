@@ -8,7 +8,7 @@ class Game_UI
 {
 private:
 	Font font;
-	Text lives, numLives, aliensKilled, numKilled;
+	Text lives, numLives, aliensKilled, numKilled, level, numLevel;
 public:
 	Game_UI(RenderWindow& win) 
 	{
@@ -33,6 +33,16 @@ public:
 		numKilled.setFont(font);
 		numKilled.setFillColor(Color::White);
 		numKilled.setPosition(425, 30);
+
+		level.setString("Level: ");
+		level.setFont(font);
+		level.setCharacterSize(50);
+		level.setFillColor(Color::White);
+		level.setPosition(600, 25);
+		numLevel.setCharacterSize(40);
+		numLevel.setFont(font);
+		numLevel.setFillColor(Color::White);
+		numLevel.setPosition(725, 30);
 	}
 	void loadFont()
 	{
@@ -50,6 +60,16 @@ public:
 		numKilled.setString(to_string(killCount));
 		win.draw(numKilled);
 		win.draw(aliensKilled);
+	}
+	void dispLevelNum(RenderWindow& win, int lvlNum)
+	{
+		numLevel.setString(to_string(lvlNum));
+		win.draw(numLevel);
+		win.draw(level);
+	}
+	void dispEndGame(RenderWindow& win, string winner)
+	{
+
 	}
 	void die(string msg)
 	{

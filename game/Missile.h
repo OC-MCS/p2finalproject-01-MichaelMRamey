@@ -34,4 +34,8 @@ public:
 	{
 		return missile.getGlobalBounds();
 	}
+	float getYPos()
+	{
+		return missile.getPosition().y;
+	}
 };

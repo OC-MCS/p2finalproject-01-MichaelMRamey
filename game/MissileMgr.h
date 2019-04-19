@@ -38,9 +38,15 @@ public:
 	}
 	void moveMissiles()
 	{
-		for (missileListItr = missileList.begin(); missileListItr != missileList.end(); missileListItr++)
+		for (missileListItr = missileList.begin(); missileListItr != missileList.end();)
 		{
 			missileListItr->moveMissile();
+			if (missileListItr->getYPos() < 0)
+			{
+				missileListItr = missileList.erase(missileListItr);
+			}
+			else
+				missileListItr++;
 		}
 	}
 	Missile getMissile(int index)
@@ -58,5 +64,9 @@ public:
 		missileListItr = missileList.begin();
 		advance(missileListItr, index);
 		missileList.erase(missileListItr);
+	}
+	void deleteAllMissiles()
+	{
+		missileList.clear();
 	}
 };

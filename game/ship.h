@@ -8,10 +8,12 @@ class Ship
 private:
 	Sprite ship;
 	Texture shipTexture;
+	Vector2f startingPos;
 public:
 	Ship(Vector2f shipPos)
 	{
-		ship.setPosition(shipPos);
+		startingPos = shipPos;
+		ship.setPosition(startingPos);
 		loadTexture();
 		ship.setTexture(shipTexture);
 	}
@@ -47,5 +49,13 @@ public:
 	void draw(RenderWindow& win)
 	{
 		win.draw(ship);
+	}
+	FloatRect getHitbox()
+	{
+		return ship.getGlobalBounds();
+	}
+	void resetPos()
+	{
+		ship.setPosition(startingPos);
 	}
 };

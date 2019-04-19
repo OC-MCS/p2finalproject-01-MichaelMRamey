@@ -5,6 +5,7 @@ using namespace std;
 using namespace sf;
 #include <list>
 #include "alien.h"
+#include "BombMgr.h"
 
 class MissileMgr;
 
@@ -20,14 +21,12 @@ public:
 	AlienMgr()
 	{
 		loadTexture();
-		aliensKilled = 0;
-		aliensSpawned = 0;
 	}
 	void loadTexture()
 	{
-		if (!alienTexture.loadFromFile("ship.png"))
+		if (!alienTexture.loadFromFile("alien1.png"))
 		{
-			cout << "Unable to load ship texture!" << endl;
+			cout << "Unable to load alien texture!" << endl;
 			exit(EXIT_FAILURE);
 		}
 	}
@@ -99,10 +98,7 @@ public:
 		advance(alienListItr, index);
 		return *alienListItr;
 	}
-	int getListSize()
-	{
-		return alienList.size();
-	}
+
 	int getAliensKilled()
 	{
 		return aliensKilled;
@@ -118,5 +114,26 @@ public:
 	void resetAliensSpawned()
 	{
 		aliensSpawned = 0;
+	}
+	bool allAliensDead()
+	{
+		bool result = false;
+		if (alienList.size() == 0)
+		{
+			result = true;
+			if (!alienTexture.loadFromFile("alien2.png"))
+			{
+				cout << "Unable to load alien texture!" << endl;
+				exit(EXIT_FAILURE);
+			}
+		}
+		return result;
+	}
+	void bombChance(BombMgr& bombMgr)
+	{
+		int randomNumber = rand() % alienList.size();
+		alienListItr = alienList.begin();
+		advance(alienListItr, randomNumber);
+		bombMgr.newBomb(alienListItr->getPosition());
 	}
 };

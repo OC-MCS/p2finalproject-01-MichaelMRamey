@@ -56,4 +56,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="Bomb.JPG">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\..\..\Documents\Spring Semester 2019\Programming 2\Labs\Lab05_Tasks%281%29\Lab05_Tasks\game\ship.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="alien1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="alien2.PNG">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
 </Project>

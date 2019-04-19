@@ -7,8 +7,10 @@ using namespace sf;
 #include "GameMgr.h"
 #include "MissileMgr.h"
 #include "AlienMgr.h"
+#include "BombMgr.h"
 #include "Game_UI.h"
 #include "Menu_UI.h"
+#include "BombMgr.h"
 //============================================================
 // Michael Ramey
 // Programming 2: Final project (Space Invaders!)
@@ -33,26 +35,22 @@ int main()
 	Game_UI gameUI(window);
 	MissileMgr missileMgr;
 	AlienMgr alienMgr;
+	BombMgr bombMgr;
 
 	bool inGame = false;
-	gameMgr.startGame(alienMgr);
-	
+	bool gamePlayed = false;
+
 	Texture starsTexture;
 	if (!starsTexture.loadFromFile("stars.jpg"))
 	{
 		cout << "Unable to load stars texture!" << endl;
 		exit(EXIT_FAILURE);
 	}
-	
+
 	Sprite background;
 	background.setTexture(starsTexture);
-	// The texture file is 640x480, so scale it up a little to cover 800x600 window
 	background.setScale(1.5, 1.5);
 
-	// initial position of the ship will be approx middle of screen
-
-	int hitCount = 0;
-	bool isMissileInFlight = false;
 	while (window.isOpen())
 	{
 		// check all the window's events that were triggered since the last iteration of the loop
@@ -64,10 +62,13 @@ int main()
 			// "close requested" event: we close the window
 			if (event.type == Event::Closed)
 				window.close();
-			else if (event.type == Event::MouseButtonReleased)
+			else if (event.type == Event::MouseButtonReleased && !inGame)
 			{
 				Vector2f mousePos = window.mapPixelToCoords(Mouse::getPosition(window));
 				inGame = menuUI.handleMouseUp(mousePos);
+				if (inGame) {
+					gameMgr.startGame(alienMgr, missileMgr, bombMgr, ship);
+				}
 			}
 			else if (event.type == Event::KeyPressed)
 			{
@@ -91,6 +92,14 @@ int main()
 		if (!inGame)
 		{
 			menuUI.drawBtn(window);
+			if (gameMgr.getPlayerWin() && gamePlayed)
+			{
+				menuUI.displayVictory(window);
+			}
+			else if (gamePlayed)
+				menuUI.displayDefeat(window);
+			else
+				menuUI.displayTitle(window);
 		}
 		else
 		{
@@ -101,28 +110,23 @@ int main()
 			// draw the ship on top of background 
 			// (the ship from previous frame was erased when we drew background)
 			ship.draw(window);
-
-
+			
 			missileMgr.moveMissiles();
 			missileMgr.drawMissiles(window);
 
 			alienMgr.moveAliens();
 			alienMgr.drawAliens(window);
 
-			gameMgr.checkGameStatus(alienMgr, missileMgr);
+			bombMgr.moveBombs();
+			bombMgr.drawBombs(window);
+
+			gameMgr.checkGameStatus(alienMgr, missileMgr, bombMgr, ship);
 			gameUI.dispLives(window, gameMgr.livesLeft());
 			gameUI.dispKills(window, alienMgr.getAliensKilled());
-
-			//FloatRect enemyBounds = enemy.getGlobalBounds();
-			/*if (missile.getGlobalBounds() == enemyBounds)															HITTING ENEMY
-			{
-				isMissileInFlight = false;
-				missile.setPosition(99, 99);
-				hitCount++;
-				cout << "Enemy Hits: " << hitCount << endl;
-			}*/
-
-			// end the current frame; this makes everything that we have 
+			gameUI.dispLevelNum(window, gameMgr.getLevelNum());
+			inGame = gameMgr.getInGame();
+			gamePlayed = true;
+			// end the current frame; this makes everything that we have
 			// already "drawn" actually show up on the screen
 			
 

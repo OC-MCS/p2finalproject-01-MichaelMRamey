@@ -163,6 +163,12 @@
     <ClInclude Include="MissileMgr.h" />
     <ClInclude Include="ship.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\..\..\Documents\Spring Semester 2019\Programming 2\Labs\Lab05_Tasks%281%29\Lab05_Tasks\game\ship.png" />
+    <Image Include="alien1.png" />
+    <Image Include="alien2.PNG" />
+    <Image Include="Bomb.JPG" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

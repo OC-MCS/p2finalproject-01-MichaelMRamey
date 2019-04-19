@@ -7,7 +7,7 @@ class Alien
 {
 private:
 	Sprite alien;
-	const float MOVE_DISTANCE = 0.5f;
+	const float MOVE_DISTANCE = 0.3f;
 public:
 	Alien(Vector2f pos, Texture& texture)
 	{
@@ -25,6 +25,10 @@ public:
 	float getYPos()
 	{
 		return alien.getPosition().y;
+	}
+	Vector2f getPosition()
+	{
+		return alien.getPosition();
 	}
 	FloatRect getHitbox()
 	{
