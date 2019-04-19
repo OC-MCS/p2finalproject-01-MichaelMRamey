@@ -4,6 +4,8 @@ using namespace std;
 #include <SFML/Graphics.hpp>
 using namespace sf;
 #include "Missile.h"
+
+
 class MissileMgr
 {
 private:
@@ -40,5 +42,21 @@ public:
 		{
 			missileListItr->moveMissile();
 		}
+	}
+	Missile getMissile(int index)
+	{
+		missileListItr = missileList.begin();
+		advance(missileListItr, index);
+		return *missileListItr;
+	}
+	int getListSize()
+	{
+		return missileList.size();
+	}
+	void deleteMissile(int index)
+	{
+		missileListItr = missileList.begin();
+		advance(missileListItr, index);
+		missileList.erase(missileListItr);
 	}
 };

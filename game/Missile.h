@@ -30,4 +30,8 @@ public:
 	{
 		return missile.getPosition();
 	}
+	FloatRect getHitbox()
+	{
+		return missile.getGlobalBounds();
+	}
 };

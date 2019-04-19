@@ -7,7 +7,7 @@ class Alien
 {
 private:
 	Sprite alien;
-	const float MOVE_DISTANCE = 3.0f;
+	const float MOVE_DISTANCE = 0.5f;
 public:
 	Alien(Vector2f pos, Texture& texture)
 	{
@@ -30,4 +30,5 @@ public:
 	{
 		return alien.getGlobalBounds();
 	}
+
 };

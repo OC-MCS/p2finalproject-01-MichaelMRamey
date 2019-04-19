@@ -5,16 +5,23 @@ using namespace std;
 using namespace sf;
 #include <list>
 #include "alien.h"
+
+class MissileMgr;
+
 class AlienMgr
 {
 private:
 	Texture alienTexture;
 	list<Alien> alienList;
 	list<Alien>::iterator alienListItr;
+	int aliensKilled;
+	int aliensSpawned;
 public:
 	AlienMgr()
 	{
 		loadTexture();
+		aliensKilled = 0;
+		aliensSpawned = 0;
 	}
 	void loadTexture()
 	{
@@ -38,9 +45,10 @@ public:
 	void spawnAliens()
 	{
 		float x = 40;
-		for (int i=0; i < 10; i++)
+		for (int i = 0; i < 10; i++)
 		{
-			newAlien(Vector2f(x,100));
+			newAlien(Vector2f(x, 100));
+			aliensSpawned++;
 			x += 100;
 		}
 	}
@@ -69,14 +77,27 @@ public:
 		}
 		return result;
 	}
-	/*void checkForHit(MissileMgr& missileMgr)
+	bool checkForHit(FloatRect missileHitbox)
 	{
-		for (alienListItr = alienList.begin(); alienListItr != alienList.end(); alienListItr++)
+		bool hitAlien = false;
+		for (alienListItr = alienList.begin(); alienListItr != alienList.end();)
 		{
-			if (alienListItr->getHitbox().intersects(missileMgr.missileListItr->getHitbox())
+			if (alienListItr->getHitbox().intersects(missileHitbox))
 			{
-				alienList.erase(alienListItr);
+				alienListItr = alienList.erase(alienListItr);
+				hitAlien = true;
 			}
+			else
+				alienListItr++;
 		}
-	}*/
+		return hitAlien;
+	}
+	Alien getAlien(int index)
+	{
+		alienListItr = alienList.begin();
+		advance(alienListItr, index);
+		return *alienListItr;
+	}
+	
+
 };

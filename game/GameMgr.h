@@ -5,25 +5,34 @@ class GameMgr
 {
 private:
 	int playerLivesLeft;
+	int levelNum;
 public:
-	GameMgr()
-	{
-
-	}
 	void startGame(AlienMgr& alienMgr)
 	{
 		playerLivesLeft = 3;
+		levelNum = 1;
 		alienMgr.spawnAliens();
 	}
-	// Do this every frame to check for any hits and alien position
+	// Do this every frame to check for collisions and level change
+
+
 	void checkGameStatus(AlienMgr& alienMgr, MissileMgr& missileMgr)
 	{
 		if (alienMgr.aliensReachedPlayer())
 		{
 			loseALife(alienMgr);
 		}
-		//alienMgr.checkForHit(missileMgr);
-		//missileMgr.checkForHit(alienMgr);
+		
+		for (int i = 0; i < missileMgr.getListSize(); i++)
+		{
+			if(alienMgr.checkForHit(missileMgr.getMissile(i).getHitbox()))
+				missileMgr.deleteMissile(i);
+		}
+
+		/*if (alienMgr.aliensKilled() == alienMgr.aliensSpawned())
+		{
+			levelNum++;
+		}	*/	
 	}
 	void loseALife(AlienMgr& alienMgr)
 	{
