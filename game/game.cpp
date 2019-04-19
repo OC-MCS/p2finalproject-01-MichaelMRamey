@@ -19,26 +19,26 @@ using namespace sf;
 
 int main()
 {
-	const int WINDOW_WIDTH = 800;
-	const int WINDOW_HEIGHT = 600;
+	const int WINDOW_WIDTH = 800;	//window width var
+	const int WINDOW_HEIGHT = 600;	//window height var
 
-	RenderWindow window(VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "aliens!");
-	// Limit the framerate to 60 frames per second
-	window.setFramerateLimit(60);
+	RenderWindow window(VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Interstellar Attackers!");
+	window.setFramerateLimit(60); //Set how how many frames can happen per second
 
-	Vector2f shipStartPosition(400, 550);
-	Ship ship(shipStartPosition);
+	Vector2f shipStartPosition(400, 550);	//Set ship start position
+	Ship ship(shipStartPosition);			//Create an instance of a ship
 
-	GameMgr gameMgr;
-	Menu_UI menuUI;
-	Game_UI gameUI(window);
-	MissileMgr missileMgr;
-	AlienMgr alienMgr;
-	BombMgr bombMgr;
+	GameMgr gameMgr;			//Create an instance of a GameMgr
+	Menu_UI menuUI;				//Create an instance of a Menu_UI
+	Game_UI gameUI(window);		//Create an instance of a Game_UI
+	MissileMgr missileMgr;		//Create an instance of a MissileMgr
+	AlienMgr alienMgr;			//Create an instance of an AlienMgr
+	BombMgr bombMgr;			//Create an instance of a BombMgr
 
-	bool inGame = false;
-	bool gamePlayed = false;
+	bool inGame = false;		//Declare and set a bool var to determine if player is in game
+	bool gamePlayed = false;	//Declare and set a bool var to determine if the animation loop has run yet
 
+	//Set up background====================================
 	Texture starsTexture;
 	if (!starsTexture.loadFromFile("stars.jpg"))
 	{
@@ -49,16 +49,15 @@ int main()
 	Sprite background;
 	background.setTexture(starsTexture);
 	background.setScale(1.5, 1.5);
+	//=====================================================
 
+	//Check for user interaction in this loop
 	while (window.isOpen())
 	{
-		// check all the window's events that were triggered since the last iteration of the loop
-		// For now, we just need this so we can click on the window and close it
 		Event event;
 
 		while (window.pollEvent(event))
 		{
-			// "close requested" event: we close the window
 			if (event.type == Event::Closed)
 				window.close();
 			else if (event.type == Event::MouseButtonReleased && !inGame)
@@ -78,16 +77,13 @@ int main()
 			}
 		}
 
-		//===========================================================
-		// Everything from here to the end of the loop is where you put your
-		// code to produce ONE frame of the animation. The next iteration of the loop will
-		// render the next frame, and so on. All this happens ~ 60 times/second.
-		//===========================================================
-
-		// draw background first, so everything that's drawn later 
-		// will appear on top of background
+		//========================
+		//======DRAWING LOOP======
+		//========================
 		window.draw(background);
 
+
+		//If statement for whether the player is in game
 		if (!inGame)
 		{
 			menuUI.drawBtn(window);
@@ -102,37 +98,32 @@ int main()
 		}
 		else
 		{
-			//detect key presses to update the position of the ship. 
-			//See moveShip() function above.
+			//ship functions
 			ship.moveShip();
-
-			// draw the ship on top of background 
-			// (the ship from previous frame was erased when we drew background)
 			ship.draw(window);
 			
+			//missileMgr functions
 			missileMgr.moveMissiles();
 			missileMgr.drawMissiles(window);
 
+			//alienMgr functions
 			alienMgr.moveAliens();
 			alienMgr.drawAliens(window);
 
+			//bombMgr functions
 			bombMgr.moveBombs();
 			bombMgr.drawBombs(window);
 
+			//gameMgr functions
 			gameMgr.checkGameStatus(alienMgr, missileMgr, bombMgr, ship);
+			inGame = gameMgr.getInGame(); //Important!  determines if user is still in game
+
+			//game UI functions
 			gameUI.dispLives(window, gameMgr.livesLeft());
 			gameUI.dispKills(window, alienMgr.getAliensKilled());
 			gameUI.dispLevelNum(window, gameMgr.getLevelNum());
-			inGame = gameMgr.getInGame();
-			gamePlayed = true;
-			// end the current frame; this makes everything that we have
-			// already "drawn" actually show up on the screen
 			
-
-			// At this point the frame we have built is now visible on screen.
-			// Now control will go back to the top of the animation loop
-			// to build the next frame. Since we begin by drawing the
-			// background, each frame is rebuilt from scratch.
+			gamePlayed = true; //set gamePlayed to true because we have now gone through 1 frame
 		}
 		window.display();
 
